@@ -1,6 +1,6 @@
 Ext.ns('MapRed.wizards');
 
-MapRed.wizards.SftpTreeCard = Ext
+MapRed.wizards.UPPMAXTreeCard = Ext
 	.extend(
 		Ext.ux.Wiz.Card,
 		{
