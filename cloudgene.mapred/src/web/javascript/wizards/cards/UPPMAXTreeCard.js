@@ -130,7 +130,7 @@ MapRed.wizards.UPPMAXTreeCard = Ext
 						});
 
 			// call parent
-			MapRed.wizards.SftpTreeCard.superclass.initComponent
+			MapRed.wizards.UPPMAXTreeCard.superclass.initComponent
 				.apply(this, arguments);
 
 		    },

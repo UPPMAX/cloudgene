@@ -1,7 +1,7 @@
 
 Ext.ns('MapRed.wizards');
 
-MapRed.wizards.SelectUPPMAXServerCard = Ext.extend(Ext.ux.Wiz.Card, {
+MapRed.wizards.SelectUPPMAXCard = Ext.extend(Ext.ux.Wiz.Card, {
 
 	serverField : null,
 
@@ -101,7 +101,7 @@ MapRed.wizards.SelectUPPMAXServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 
 		// call parent
-		MapRed.wizards.SelectUPPMAXServerCard.superclass.initComponent.apply(this,
+		MapRed.wizards.SelectUPPMAXCard.superclass.initComponent.apply(this,
 				arguments);
 
 	},
