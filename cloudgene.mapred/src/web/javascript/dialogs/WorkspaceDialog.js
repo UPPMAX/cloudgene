@@ -265,6 +265,16 @@ oldValue = table.selModel.getSelected().data.text;
 			wizard.show();
 
 		    }
+		}
+		,{
+		    text : 'From UPPMAX project',
+		    handler : function(btn) {
+		    var table = Ext.getCmp('file-grid');
+		    var store = table.getStore();
+			var wizard = new MapRed.wizards.ImportDataUPPMAX({folder:store.path});
+			wizard.show();
+
+		    }
 		},{
 		    text : 'From SFTP Server...',
 		    handler : function(btn) {
