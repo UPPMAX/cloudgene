@@ -19,7 +19,7 @@
 
 Ext.ns('MapRed.wizards');
 
-MapRed.wizards.ImportDataSftp = Ext.extend(Ext.ux.Wiz, {
+MapRed.wizards.ImportDataUPPMAX = Ext.extend(Ext.ux.Wiz, {
 
     folder: "",
 
