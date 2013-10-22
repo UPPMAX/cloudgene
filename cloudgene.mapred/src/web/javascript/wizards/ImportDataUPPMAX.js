@@ -32,7 +32,7 @@ MapRed.wizards.ImportDataUPPMAX = Ext.extend(Ext.ux.Wiz, {
 			title : 'Import Data from UPPMAX',
 			headerConfig : {
 				title : 'Import Data',
-				image : '../images/import-data.png',
+				image : '../images/uppmax.square.png',
 				stepText : '{2}'
 			},
 			loadMaskConfig : {
