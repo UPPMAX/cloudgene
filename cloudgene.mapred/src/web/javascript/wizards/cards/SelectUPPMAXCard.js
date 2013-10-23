@@ -18,9 +18,10 @@ MapRed.wizards.SelectUPPMAXCard = Ext.extend(Ext.ux.Wiz.Card, {
 		this.serverField = new Ext.form.TextField({
 			id : "sftp-server",
 			name : 'server',
-			value : 'sftp://',
+			value : 'sftp://kalkyl.uppmax.uu.se',
 			fieldLabel : 'SFTP-Server',
-			allowBlank : false
+			allowBlank : false,
+			disabled :true
 		});
 
 		this.userField = new Ext.form.TextField({
@@ -45,14 +46,15 @@ MapRed.wizards.SelectUPPMAXCard = Ext.extend(Ext.ux.Wiz.Card, {
 			name : 'port',
 			fieldLabel : 'ssh port',
 			allowBlank : false,
-			value : '22'
+			value : '22',
+			hidden : true
 		});
 
 
 		Ext.apply(this, {
 			id : 'card1',
 			wizRef : this,
-			title : 'Import from SFTP-Server.',
+			title : 'Import from UPPMAX project',
 			monitorValid : true,
 			frame : false,
 			fileUpload : true,
@@ -66,7 +68,7 @@ MapRed.wizards.SelectUPPMAXCard = Ext.extend(Ext.ux.Wiz.Card, {
 					{
 						border : false,
 						bodyStyle : 'background:none;padding-bottom:30px;',
-						html : 'Please specify the SFTP/SSH connection.'
+						html : 'PleasePlease specify your UPPMAX username and password, optional type in your project ID otherwise all your projects will be listed.'
 					},
 					{
 						title : '',
@@ -80,9 +82,25 @@ MapRed.wizards.SelectUPPMAXCard = Ext.extend(Ext.ux.Wiz.Card, {
 						defaultType : 'textfield',
 						items : [ new Ext.form.TextField({
 							id : 'path',
-							fieldLabel : 'Folder Name',
+							fieldLabel : 'Import to Folder',
 							allowBlank : false,
 							value: this.folder
+						}) ]
+					},
+{
+						title : 'Define UPPMAX project',
+						id : 'fieldset-uppmax-proj',
+						xtype : 'fieldset',
+						autoHeight : true,
+						defaults : {
+							width : 210,
+							labelStyle : 'font-size:11px'
+						},
+						defaultType : 'textfield',
+						items : [ new Ext.form.TextField({
+							id : 'uppmax-project-id',
+							fieldLabel : 'Project id',
+							allowBlank : true
 						}) ]
 					},
 					{

@@ -146,18 +146,9 @@ MapRed.wizards.UPPMAXTreeCard = Ext
 
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
 				text : sftpServer,
-                    		expanded : true,
-				children : [
-                                {  text: 'File system (/)', 
-                                   id : '/',
-                                   path : '/',
-                                   expanded : false},
-                                   { 
-                                  text: 'Home folder (~/)',
-                                  id : '~/',
-                                  path : '~/',
-                                  expanded : true
-                                 }]
+                    		   id : '/proj/' + Ext.getCmp('uppmax-project-id').getValue();,
+                                   path : '/proj/' + Ext.getCmp('uppmax-project-id').getValue();,
+                                   expanded : true
 			    });
 
 			    Ext.getCmp('file-tree-sftp').getLoader().dataUrl = '../sftp/files';
