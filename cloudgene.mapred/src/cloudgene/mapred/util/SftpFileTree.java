@@ -42,7 +42,7 @@ public class SftpFileTree {
 		if (path.equals("LISTMYPROJ12")) {
 			ChannelExec channelE = (ChannelExec) session.openChannel("exec");
 			((ChannelExec) channelE).setCommand("groups");
-			channel.setInputStream(null);
+			channelE.setInputStream(null);
 			((ChannelExec) channelE).setErrStream(System.err);
 			InputStream in = channelE.getInputStream();
 			channelE.connect();
