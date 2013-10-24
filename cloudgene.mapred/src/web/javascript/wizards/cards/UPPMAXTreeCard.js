@@ -144,9 +144,15 @@ MapRed.wizards.UPPMAXTreeCard = Ext
 				
 			    sftpServer = Ext.getCmp('sftp-server').getValue().replace("sftp://", "");
 				UPPMAXprojId = Ext.getCmp('uppmax-project-id').getValue();
+				if (UPPMAXprojId == "") {
+ 				 rootID="LISTMYPROJ12";
+					}
+					else {
+						rootID  = '/proj/' + UPPMAXprojId;
+					}
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
 				text : sftpServer,
-                id : '/proj/' + UPPMAXprojId,
+                id : rootID,
                 path : '/proj/' + UPPMAXprojId,
                 expanded : true
 			    });
