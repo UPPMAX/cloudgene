@@ -1,88 +1,99 @@
 package cloudgene.mapred.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Vector;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
+import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 
 public class SftpFileTree {
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST,
-			String SFTPUSER, String SFTPPASS, int SFTPPORT) throws JSchException, SftpException {
-		
+			String SFTPUSER, String SFTPPASS, int SFTPPORT) throws JSchException, SftpException, IOException {
+
 		Session session = null;
 		Channel channel = null;
 		ChannelSftp channelSftp = null;
 
 		JSch jsch = new JSch();
-		try {
-			session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			throw e;
-		}
+		session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+
 		session.setPassword(SFTPPASS);
 		java.util.Properties config = new java.util.Properties();
 		config.put("StrictHostKeyChecking", "no");
 		session.setConfig(config);
-		try {
-			session.connect();
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			
-			throw e;
-			
-		}
-		try {
-			channel = session.openChannel("sftp");
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			throw e;
-		}
-		try {
-			channel.connect();
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			throw e;
-		}
+
+		session.connect();
+		channel = session.openChannel("sftp");
+		channel.connect();
 		channelSftp = (ChannelSftp) channel;
+		FileItem[] results = null;
 		
 		if (path.equals("~/")) {
-			try {
-				path = channelSftp.pwd();
-			} catch (SftpException e) {
-				// TODO Auto-generated catch block
-				throw e;
-			}
-		}
-	
+			path = channelSftp.pwd();
 
-		try {
-			channelSftp.cd(path);
-		} catch (SftpException e) {
-			// TODO Auto-generated catch block
-			throw e;
 		}
+		if (path.equals("LISTMYPROJ12"))
+		{
+			ChannelExec channelE = (ChannelExec) session.openChannel("exec");
+			((ChannelExec)channelE).setCommand("groups");
+			channel.setInputStream(null);
+		    ((ChannelExec)channelE).setErrStream(System.err);
+		    InputStream in = channelE.getInputStream();
+		    channelE.connect();
+		    String StringFromInputStream = IOUtils.toString(in, "UTF-8");
+		    String[] groups = StringFromInputStream.split(" ");
+		    channelE.disconnect();
+		    int groupNR =0;
+		    for(int i=0;i<groups.length;i++){
+				  if(groups[i].startsWith("b20"))
+				  {
+					  groupNR++;  
+				  }
+			  }
+		    results = new FileItem[groupNR];
+		    int count =0;
+		    for(int i=0;i<groups.length;i++){
+				  if(groups[i].startsWith("b20"))
+				  {
+				 results[count] = new FileItem();
+				 results[count].setText(groups[i]);
+				 results[count].setLeaf(false);
+				 results[count].setCls("folder");
+				 results[count].setId("/proj/" + groups[i]);
+				 results[count].setPath("/proj/" + groups[i]);
+				 count++;
+				  }
+			  }
+		    session.disconnect();
+			return results;
+			
+		}
+		else{
+			
 		
+
+
+		channelSftp.cd(path);
+
 		Vector<LsEntry> filelist = null;
-		try {
-			filelist =  channelSftp.ls(path);
-		} catch (SftpException e) {
-			// TODO Auto-generated catch block
-			throw e;
-		}
+		filelist =  channelSftp.ls(path);
+
 		// log.info("pwd is  " + channelSftp.pwd());
-		FileItem[] results = null;
+		
 		// -2 to take away folder ".." and "."
 		results = new FileItem[filelist.size() - 2];
 		int count = 0;
@@ -104,11 +115,7 @@ public class SftpFileTree {
 			if (entry.getAttrs().isLink()) {
 				String link = null;
 				boolean linkIsdir = false;
-				try {
-					link = channelSftp.readlink(entry.getFilename());
-				} catch (SftpException e) {
-					throw e;
-				}
+				link = channelSftp.readlink(entry.getFilename());
 				try {
 					linkIsdir = channelSftp.lstat(link).isDir();
 				} catch (com.jcraft.jsch.SftpException ex) {
@@ -147,7 +154,7 @@ public class SftpFileTree {
 				}
 
 			} 		
-				 else if (!entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
+			else if (!entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
 					.getFilename().equals(".."))))) {
 				results[count] = new FileItem();
 				results[count].setText(entry.getFilename());
@@ -161,11 +168,12 @@ public class SftpFileTree {
 			}
 
 		}
-		
+
 		channel.disconnect();
 		session.disconnect();
 		return results;
 
 	}
+}
 
 }
