@@ -82,13 +82,13 @@ public class SftpFileTree {
 				path = channelSftp.pwd();
 
 			}
-
+			log.info("PATH IS " + path);
 			channelSftp.cd(path);
 
 			Vector<LsEntry> filelist = null;
 			filelist = channelSftp.ls(path);
 
-			// log.info("pwd is  " + channelSftp.pwd());
+			log.info("pwd is  " + channelSftp.pwd());
 
 			// -2 to take away folder ".." and "."
 			results = new FileItem[filelist.size() - 2];
