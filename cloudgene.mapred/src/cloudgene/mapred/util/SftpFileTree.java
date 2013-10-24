@@ -15,9 +15,11 @@ import com.jcraft.jsch.SftpException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class SftpFileTree {
-
+	 private static final Log log = LogFactory.getLog(SftpFileTree.class);
 	@SuppressWarnings("unchecked")
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST,
 			String SFTPUSER, String SFTPPASS, int SFTPPORT)
@@ -36,7 +38,8 @@ public class SftpFileTree {
 		session.setConfig(config);
 
 		session.connect();
-
+		log.info("PATH IS " + path);
+		
 		FileItem[] results = null;
 
 		if (path.equals("LISTMYPROJ12")) {
