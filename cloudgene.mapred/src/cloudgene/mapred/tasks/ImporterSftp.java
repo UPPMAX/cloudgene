@@ -204,10 +204,13 @@ public class ImporterSftp extends AbstractTask {
 			}
 
 			for (ChannelSftp.LsEntry entry : filelist) {
-				String link = null;
 				boolean linkIsdir = false;
-				link = channelSftp.readlink(entry.getFilename());
-				linkIsdir = channelSftp.lstat(link).isDir();
+                if (entry.getAttrs().isLink()) {
+                        String link = null;
+                        link = channelSftp.readlink(entry.getFilename());
+                        linkIsdir = channelSftp.lstat(link).isDir();
+                        }
+
 				// Check if FTPFile is a regular file
 				if (!linkIsdir && !entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
 						.getFilename().equals(".."))))) {
