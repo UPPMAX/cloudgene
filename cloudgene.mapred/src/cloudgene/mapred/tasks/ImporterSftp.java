@@ -10,6 +10,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.hadoop.conf.Configuration;
@@ -203,9 +204,12 @@ public class ImporterSftp extends AbstractTask {
 			}
 
 			for (ChannelSftp.LsEntry entry : filelist) {
-
+				String link = null;
+				boolean linkIsdir = false;
+				link = channelSftp.readlink(entry.getFilename());
+				linkIsdir = channelSftp.lstat(link).isDir();
 				// Check if FTPFile is a regular file
-				if (!entry.getAttrs().isLink() && !entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
+				if (!linkIsdir && !entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
 						.getFilename().equals(".."))))) {
 
 					// path in hdfs
