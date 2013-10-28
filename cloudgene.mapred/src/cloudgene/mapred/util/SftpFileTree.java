@@ -38,7 +38,7 @@ public class SftpFileTree {
 		session.setConfig(config);
 
 		session.connect();
-		log.info("PATH IS " + path);
+		//log.info("PATH IS " + path);
 		
 		FileItem[] results = null;
 
@@ -49,7 +49,7 @@ public class SftpFileTree {
 			((ChannelExec) channelE).setErrStream(System.err);
 			InputStream in = channelE.getInputStream();
 			channelE.connect();
-			String StringFromInputStream = IOUtils.toString(in, "UTF-8");
+			String StringFromInputStream = IOUtils.toString(in, "UTF-8").replace("\n", "");
 			String[] groups = StringFromInputStream.split(" ");
 			channelE.disconnect();
 			int groupNR = 0;
@@ -82,13 +82,13 @@ public class SftpFileTree {
 				path = channelSftp.pwd();
 
 			}
-			log.info("PATH IS " + path);
+			
 			channelSftp.cd(path);
 
 			Vector<LsEntry> filelist = null;
 			filelist = channelSftp.ls(path);
 
-			log.info("pwd is  " + channelSftp.pwd());
+			
 
 			// -2 to take away folder ".." and "."
 			results = new FileItem[filelist.size() - 2];

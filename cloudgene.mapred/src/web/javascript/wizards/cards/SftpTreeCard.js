@@ -1,5 +1,5 @@
 Ext.ns('MapRed.wizards');
-
+Ext.Ajax.timeout = 90000;
 MapRed.wizards.SftpTreeCard = Ext
 	.extend(
 		Ext.ux.Wiz.Card,
