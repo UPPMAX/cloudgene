@@ -1,6 +1,7 @@
 package cloudgene.mapred.tasks;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Vector;
 
 import com.jcraft.jsch.Channel;
@@ -18,6 +19,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
+
 
 import cloudgene.mapred.util.HdfsUtil;
 import cloudgene.mapred.util.Settings;
@@ -161,16 +163,23 @@ public class ImporterSftp extends AbstractTask {
 		Session 	session 	= null;
 		Channel 	channel 	= null;
 		ChannelSftp channelSftp = null;
-		
 		JSch jsch = new JSch();
+		//Key for UPPMAX more secure
+		String source = "|1|hgOfOgsWGSVLV/gtkPnaWBvg+HY=|slr6Tj7/R+gm9T1C4ukdWSOOFYQ= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA0q1VRlzYolW9+ns1m8z9coakFE4AjiUVrEpOXABa/mX7IsBeBQhqVNllntnSVC23XNLAdeNRHwEjaRUyw2IcWziJQrQEhvI6JTtVp8encKYT1z9pMkGta+r6Q/We8F5YQN/KABOE7rS/wIHTjmnC/KvGb1SMZbIDgIABuPZG9yzgVcIwEJg6//FnIeZiAZF04K2gg8xlMZ+e1hUFwHjN7QRUdAyRafCb+xQIDfO8UB+WpYw4pqts6TJBxO1qy2jkeoXVMqZqaeJFnPbv9Zd8X7Nv8MhARTLX+aWNTiHxaTqHlOATQPF3CMzbI71U+LXAReKaZvflln6fsr53RbjEOQ==";
+		InputStream hoststream = org.apache.commons.io.IOUtils.toInputStream(source);
 		
+		
+		jsch.setKnownHosts(hoststream);
+		
+				
 	
 		try {
 			
 			session = jsch.getSession(username,server,port);
 			session.setPassword(password);
 			java.util.Properties config = new java.util.Properties();
-			config.put("StrictHostKeyChecking", "no");
+			config.put("StrictHostKeyChecking", "yes");
+			
 			session.setConfig(config);
 			session.connect();
 			channel = session.openChannel("sftp");

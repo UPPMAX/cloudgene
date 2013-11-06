@@ -30,13 +30,18 @@ public class SftpFileTree {
 		ChannelSftp channelSftp = null;
 
 		JSch jsch = new JSch();
+		//Key for UPPMAX more secure
+		String source = "|1|hgOfOgsWGSVLV/gtkPnaWBvg+HY=|slr6Tj7/R+gm9T1C4ukdWSOOFYQ= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA0q1VRlzYolW9+ns1m8z9coakFE4AjiUVrEpOXABa/mX7IsBeBQhqVNllntnSVC23XNLAdeNRHwEjaRUyw2IcWziJQrQEhvI6JTtVp8encKYT1z9pMkGta+r6Q/We8F5YQN/KABOE7rS/wIHTjmnC/KvGb1SMZbIDgIABuPZG9yzgVcIwEJg6//FnIeZiAZF04K2gg8xlMZ+e1hUFwHjN7QRUdAyRafCb+xQIDfO8UB+WpYw4pqts6TJBxO1qy2jkeoXVMqZqaeJFnPbv9Zd8X7Nv8MhARTLX+aWNTiHxaTqHlOATQPF3CMzbI71U+LXAReKaZvflln6fsr53RbjEOQ==";
+		InputStream hoststream = IOUtils.toInputStream(source);
+		
 		session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
 
 		session.setPassword(SFTPPASS);
 		java.util.Properties config = new java.util.Properties();
-		config.put("StrictHostKeyChecking", "no");
+		config.put("StrictHostKeyChecking", "yes");
 		session.setConfig(config);
-
+		jsch.setKnownHosts(hoststream);
+		
 		session.connect();
 		//log.info("PATH IS " + path);
 		
